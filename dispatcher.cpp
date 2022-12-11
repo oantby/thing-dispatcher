@@ -297,21 +297,22 @@ int main(int argc, char **argv) {
 					cmd.erase(pos2, 6);
 				}
 			}
+			
+			if (cmd.size()) {
+				try {
+					run_command(cmd);
+					send_resp(&claddr, "OK");
+				} catch (exception &e) {
+					cerr << "Failed to run command: " << e.what() << endl;
+					send_resp(&claddr, "CMD FAILED");
+				}
+			} else {
+				// a noop. that's a pass.
+				send_resp(&claddr, "OK");
+			}
 		} catch (exception &e) {
 			cerr << "Command not found: " << e.what() << endl;
 			send_resp(&claddr, "NOT FOUND");
-		}
-		if (cmd.size()) {
-			try {
-				run_command(cmd);
-				send_resp(&claddr, "OK");
-			} catch (exception &e) {
-				cerr << "Failed to run command: " << e.what() << endl;
-				send_resp(&claddr, "CMD FAILED");
-			}
-		} else {
-			// a noop. that's a pass.
-			send_resp(&claddr, "OK");
 		}
 		memset(buf, '\0', sizeof(buf));
 		memset(&claddr, 0, sizeof(claddr));
