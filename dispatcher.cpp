@@ -86,6 +86,10 @@ int get_socket() {
 		exit(1);
 	}
 	
+	// need to make sure anyone can write to us. Presume we own the
+	// socket file and set its permissions.
+	chmod(Ap.socket_path.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
+	
 	atexit(rm_socket);
 	
 	return sock;
