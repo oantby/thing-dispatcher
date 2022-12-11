@@ -248,8 +248,8 @@ void send_resp(struct sockaddr_un *addr, const char *msg) {
 }
 
 int main(int argc, char **argv) {
-	Main_socket = get_socket();
 	parse_args(argc, argv);
+	Main_socket = get_socket();
 	
 	struct sigaction sa;
 	sa.sa_handler = SIG_IGN;
